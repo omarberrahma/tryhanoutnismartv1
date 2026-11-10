@@ -1,0 +1,40 @@
+تطبيق HanOuti Smart - هيكل الصفحات والروابط (Routes)
+
+يحتوي هذا التطبيق المبني بـ Next.js App Router على الروابط والصفحات التالية:
+
+1. الصفحة الرئيسية (Landing Page)
+   - الرابط: /
+   - الملف: src/app/page.tsx
+   - الوصف: واجهة الترحيب الأساسية. تحتوي على روابط للانتقال إلى لوحة التحكم، منصة الإدارة، تسجيل الدخول، وإنشاء الحساب.
+
+2. المصادقة (Authentication)
+   - تسجيل الدخول (Login):
+     - الرابط: /login
+     - الملف: src/app/(auth)/login
+   - إنشاء حساب (Register):
+     - الرابط: /register
+     - الملف: src/app/(auth)/register
+
+3. منصة الإدارة (Platform Administration)
+   - الرابط: /platform
+   - الملف: src/app/platform/page.tsx
+   - الوصف: لوحة تحكم خاصة بمدير النظام (Super Admin) لإدارة المتاجر (Tenants) ومتابعة الاشتراكات (Subscriptions).
+
+4. لوحة تحكم التاجر (Dashboard)
+   - الرابط: /dashboard
+   - الملف: src/app/dashboard/page.tsx
+   - الوصف: لوحة التحكم الخاصة بصاحب المتجر لإدارة متجره. تتضمن الأقسام الفرعية التالية:
+     - /dashboard/orders (الطلبات)
+     - /dashboard/settings (الإعدادات)
+     - /dashboard/shipping (الشحن)
+     - /dashboard/inventory (المخزون)
+     - /dashboard/customers (العملاء)
+     - /dashboard/pos (نقطة البيع - Point of Sale)
+     - /dashboard/barcodes (الباركود)
+
+5. المتجر العام للزبائن (Store/Customer Facing)
+   - الرابط الأساسي: /store
+   - الملف: src/app/store
+   - أقسام إضافية:
+     - /store/landing (صفحة هبوط المتجر)
+     - /store/[slug] (متجر مخصص لكل تاجر بناءً على الرابط)
