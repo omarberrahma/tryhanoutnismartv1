@@ -1,0 +1,38 @@
+# HanOuti Smart - User & Technical Guide
+
+Welcome to the comprehensive guide for HanOuti Smart, a production-ready, multi-tenant POS and E-commerce SaaS.
+
+## 1. Overview
+HanOuti Smart is built using Next.js 14 App Router, Supabase (PostgreSQL, Auth, RLS), and Tailwind CSS. It supports multiple languages including RTL (Arabic). The platform allows store owners to manage their inventory, perform POS operations, and manage a public e-commerce storefront.
+
+## 2. Multi-tenant Architecture
+- **Supabase RLS:** Every major table (`products`, `orders`, `users`) includes a `tenant_id`. Row Level Security (RLS) policies ensure that each shop can only access its own data.
+- **Middleware:** `src/middleware.ts` intercepts requests to `/dashboard` and `/platform` to ensure the user is authenticated and is routed to the correct tenant context.
+
+## 3. Modules Breakdown
+### Module 0: Foundation & Multi-tenancy
+- Uses Supabase Auth (Email or Username + PIN)
+- Role-based access control (Owner, Manager, Cashier, Storekeeper)
+
+### Module 1: Inventory & Barcode Center
+- Features `src/app/dashboard/inventory` and subpages for stock moves and counting.
+- `src/components/barcodes/generator.tsx` supports designing labels for thermal and A4 printers.
+
+### Module 2: POS, Orders & Documents
+- The fast POS interface is at `src/app/dashboard/pos`.
+- Order lifecycle managed at `src/app/dashboard/orders`.
+
+### Module 3: Public E-commerce
+- The storefront is available at `src/app/store/[slug]`.
+- Landing pages for promotions at `src/app/store/landing/[id]`.
+
+### Module 4: Shipping & Logistics
+- Managed under `src/app/dashboard/shipping` to select optimal delivery providers.
+
+## 4. Setup Instructions
+- Rename `.env.example` (or similar) to `.env.local` and add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- Run `npm install`.
+- Run `npm run dev` to start the local development server.
+
+## 5. PWA Support
+- Configured using `next-pwa` in `next.config.mjs` to ensure the app works offline and can be installed on mobile devices.
