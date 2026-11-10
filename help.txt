@@ -1,38 +1,47 @@
-# HanOuti Smart - User & Technical Guide
+# HanOuti Smart - Comprehensive Technical & Functional Guide
 
-Welcome to the comprehensive guide for HanOuti Smart, a production-ready, multi-tenant POS and E-commerce SaaS.
+Welcome to the comprehensive guide for **HanOuti Smart**, a production-ready, multi-tenant POS and E-commerce SaaS. This platform is specifically customized for the Algerian market, featuring built-in Arabic RTL support, as well as French and English localization.
+
+---
 
 ## 1. Overview
-HanOuti Smart is built using Next.js 14 App Router, Supabase (PostgreSQL, Auth, RLS), and Tailwind CSS. It supports multiple languages including RTL (Arabic). The platform allows store owners to manage their inventory, perform POS operations, and manage a public e-commerce storefront.
+HanOuti Smart is built on a modern, highly scalable stack using **Next.js 14 (App Router)**, **Supabase** (PostgreSQL, Authentication, Row Level Security), and **Tailwind CSS**. It serves as an all-in-one platform allowing store owners to manage their inventory, conduct lightning-fast POS operations, and manage public e-commerce storefronts seamlessly. The system operates as a Progressive Web App (PWA) via `next-pwa`, enabling crucial offline capabilities.
 
-## 2. Multi-tenant Architecture
-- **Supabase RLS:** Every major table (`products`, `orders`, `users`) includes a `tenant_id`. Row Level Security (RLS) policies ensure that each shop can only access its own data.
-- **Middleware:** `src/middleware.ts` intercepts requests to `/dashboard` and `/platform` to ensure the user is authenticated and is routed to the correct tenant context.
+---
 
-## 3. Modules Breakdown
-### Module 0: Foundation & Multi-tenancy
-- Uses Supabase Auth (Email or Username + PIN)
-- Role-based access control (Owner, Manager, Cashier, Storekeeper)
+## 2. Multi-tenant Architecture & Security
+- **Data Isolation:** The platform utilizes Supabase Row Level Security (RLS) to enforce strict multi-tenancy. Every major entity table (e.g., `products`, `orders`, `users`) includes a `tenant_id` column. RLS policies guarantee that a tenant (store) can only query, insert, or modify data associated with their own `tenant_id`.
+- **Authentication:** Powered by Supabase Auth, supporting standard Email/Password authentication and PIN-based login for POS cashiers.
+- **Middleware Protection:** The `src/middleware.ts` intercepts requests. It protects `/dashboard` routes, ensuring users are authenticated, and protects `/platform` (SaaS Admin) routes, restricting access strictly to users with an "Owner" role.
 
-### Module 1: Inventory & Barcode Center
-- Features `src/app/dashboard/inventory` and subpages for stock moves and counting.
-- `src/components/barcodes/generator.tsx` supports designing labels for thermal and A4 printers.
+---
 
-### Module 2: POS, Orders & Documents
-- The fast POS interface is at `src/app/dashboard/pos`.
-- Order lifecycle managed at `src/app/dashboard/orders`.
+## 3. Core Modules Breakdown
 
-### Module 3: Public E-commerce
-- The storefront is available at `src/app/store/[slug]`.
-- Landing pages for promotions at `src/app/store/landing/[id]`.
+### Module 1: Inventory & Barcode Management
+**Path:** `src/app/dashboard/inventory` & `src/app/dashboard/barcodes`
+- **Inventory Tracking:** Manage products, variants, categories, stock moves (in/out/transfers), and periodic inventory counting.
+- **Barcode Generator:** Specialized module (`src/app/dashboard/barcodes`) allowing store owners to design and print custom barcode labels. Supports both Thermal receipt printers (e.g., 80mm/58mm) and standard A4 printers for bulk label printing.
 
-### Module 4: Shipping & Logistics
-- Managed under `src/app/dashboard/shipping` to select optimal delivery providers.
+### Module 2: Point of Sale (POS) & Order Management
+**Path:** `src/app/dashboard/pos` & `src/app/dashboard/orders`
+- **Fast POS Interface:** Optimized for speed, the POS interface (`src/app/dashboard/pos`) supports barcode scanning, quick cart manipulation, and offline resilience.
+- **Order Lifecycle:** The `orders` module handles the complete lifecycle from draft, pending, confirmed, to delivered. It also includes an interface for generating and printing order documents (invoices, receipts).
 
-## 4. Setup Instructions
-- Rename `.env.example` (or similar) to `.env.local` and add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-- Run `npm install`.
-- Run `npm run dev` to start the local development server.
+### Module 3: Public E-commerce Storefront
+**Path:** `src/app/store/[slug]` & `src/app/store/landing/[id]`
+- **Tenant Storefronts:** Each tenant gets a dedicated, SEO-friendly storefront route (`/store/their-shop-slug`) where customers can browse catalogs and place orders.
+- **Landing Pages:** Support for promotional landing pages (`/store/landing/[id]`) optimized for high conversion rates.
 
-## 5. PWA Support
-- Configured using `next-pwa` in `next.config.mjs` to ensure the app works offline and can be installed on mobile devices.
+### Module 4: Shipping & Logistics Integration
+**Path:** `src/app/dashboard/shipping`
+- **Shipping Providers:** Natively tailored for the Algerian market, this module allows store owners to configure and filter shipping rates using major local delivery companies:
+  - **Yalidine Express**
+  - **ZR Express**
+  - **Maystro Delivery**
+- Allows automated rate calculation based on wilaya (province) and delivery type (home delivery vs. desk pick-up).
+
+---
+
+## 4. Progressive Web App (PWA)
+Configured using `next-pwa` in `next.config.mjs`. The platform caches core assets to ensure that critical operations, such as the POS interface, remain functional during intermittent network connectivity—a common requirement in retail environments.

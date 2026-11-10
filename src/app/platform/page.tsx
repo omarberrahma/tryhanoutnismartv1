@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function PlatformAdmin() {
   return (
-    <div dir="rtl" className="p-8 font-sans bg-zinc-50 dark:bg-zinc-950 min-h-screen text-zinc-900 dark:text-zinc-50">
+    <div className="p-8 font-sans bg-zinc-50 dark:bg-zinc-950 min-h-screen text-zinc-900 dark:text-zinc-50">
       <div className="max-w-6xl mx-auto space-y-8">
 
         <header className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-6">
